@@ -1,6 +1,6 @@
 # SUJIN SABU
 **Kollam, Kerala, India** | +91 9747886284 | sujinsabu2617@gmail.com  
-[LinkedIn Profile](https://www.linkedin.com/in/sujin-sabu-671392229) | Open to: India, Gulf Region, Remote  
+[LinkedIn](https://www.linkedin.com/in/sujin-sabu-671392229) | [Portfolio](https://sujinsabu.github.io/portfolio/) | Open to: India, Gulf Region, Remote  
 
 ---
 

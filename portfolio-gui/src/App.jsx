@@ -186,7 +186,7 @@ function App() {
 \\begin{center}
     {\\Huge \\scshape Sujin Sabu} \\\\ \\vspace{3pt}
     \\small \\textbf{Kollam, Kerala, India} \\ $|$ \\ +91 9747886284 \\ $|$ \\ \\href{mailto:sujinsabu2617@gmail.com}{sujinsabu2617@gmail.com} \\\\
-    \\small \\href{https://www.linkedin.com/in/sujin-sabu-671392229}{linkedin.com/in/sujin-sabu-671392229} \\ $|$ \\ Open to: India, Gulf, Remote
+    \\small \\href{https://www.linkedin.com/in/sujin-sabu-671392229}{linkedin.com/in/sujin-sabu-671392229} \\ $|$ \\ \\href{https://sujinsabu.github.io/portfolio/}{\\underline{sujinsabu.github.io/portfolio}} \\ $|$ \\ Open to: India, Gulf, Remote
 \\end{center}
 
 \\section*{Professional Summary}
@@ -589,7 +589,7 @@ UKF College of Engineering and Technology | APJ Abdul Kalam Technological Univer
                 <div className="resume-paper">
                   <h1>SUJIN SABU</h1>
                   <div className="resume-contact">
-                    Kollam, Kerala, India | +91 9747886284 | sujinsabu2617@gmail.com | linkedin.com/in/sujin-sabu-671392229
+                    Kollam, Kerala, India | +91 9747886284 | sujinsabu2617@gmail.com | linkedin.com/in/sujin-sabu-671392229 | <a href="https://sujinsabu.github.io/portfolio/" target="_blank" rel="noreferrer" style={{ color: '#2563eb', textDecoration: 'underline' }}>sujinsabu.github.io/portfolio</a>
                   </div>
 
                   <h2>Professional Summary</h2>

@@ -23,8 +23,10 @@ doc.fontSize(22).font('Helvetica-Bold').text('SUJIN SABU', { align: 'center' });
 doc.moveDown(0.2);
 doc.fontSize(11).font('Helvetica').text('Cybersecurity Professional | SOC Analyst | CompTIA Security+ ce | OCSP Certified', { align: 'center' });
 doc.moveDown(0.2);
-doc.fontSize(9.5).text('+91 9747886284  |  sujinsabu2617@gmail.com  |  linkedin.com/in/sujin-sabu-671392229  |  Kollam, Kerala, India', { align: 'center' });
-doc.moveDown(0.8);
+doc.fontSize(9.2).text('+91 9747886284  |  sujinsabu2617@gmail.com  |  linkedin.com/in/sujin-sabu-671392229', { align: 'center' });
+doc.moveDown(0.15);
+doc.fontSize(9.2).text('Portfolio: https://sujinsabu.github.io/portfolio/  |  Kollam, Kerala, India', { align: 'center' });
+doc.moveDown(0.7);
 
 // Helper function for ATS-friendly section headers
 function addSection(title) {
