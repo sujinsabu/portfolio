@@ -1,0 +1,5 @@
+portfolio-gui/node_modules
+portfolio-gui/dist
+portfolio-gui/dist-ssr
+*.log
+.DS_Store

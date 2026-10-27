@@ -1,9 +1,43 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Shield, Crosshair, Map as MapIcon, Activity, Code, ExternalLink, Mail, Link as LinkIcon, Phone, Star, Zap, Cpu, Sparkles, MessageCircle, PenTool } from 'lucide-react'
+import { 
+  Shield, 
+  Terminal, 
+  Activity, 
+  Code, 
+  ExternalLink, 
+  Mail, 
+  Link as LinkIcon, 
+  Phone, 
+  Star, 
+  Zap, 
+  Cpu, 
+  Sparkles, 
+  MessageCircle, 
+  PenTool, 
+  Award, 
+  FileText, 
+  Download, 
+  CheckCircle2, 
+  Check, 
+  Copy, 
+  X, 
+  Eye, 
+  Layers, 
+  Lock, 
+  Network, 
+  Server, 
+  AlertTriangle 
+} from 'lucide-react'
 import './index.css'
 
 function App() {
-  
+  const [activeTab, setActiveTab] = useState('all');
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
+  const [resumeViewTab, setResumeViewTab] = useState('preview');
+  const [copiedContact, setCopiedContact] = useState('');
+  const [copiedLatex, setCopiedLatex] = useState(false);
+
+  // Intersection Observer for smooth reveal
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -12,7 +46,7 @@ function App() {
           entry.target.style.transform = 'translateY(0)';
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08 });
 
     document.querySelectorAll('.section').forEach((el) => {
       observer.observe(el);
@@ -21,76 +55,165 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const [copied, setCopied] = useState(false);
-  const handleCopy = () => {
-    navigator.clipboard.writeText('+91-9747886284');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = (text, label) => {
+    navigator.clipboard.writeText(text);
+    setCopiedContact(label);
+    setTimeout(() => setCopiedContact(''), 2500);
   };
 
-  // 3D Avatar Tilt Logic
-  const avatarRef = useRef(null);
-  const handleMouseMove = (e) => {
-    if (!avatarRef.current) return;
-    const { left, top, width, height } = avatarRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 15;
-    const y = (e.clientY - top - height / 2) / 15;
-    avatarRef.current.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg) scale3d(1.05, 1.05, 1.05)`;
-  };
-  const handleMouseLeave = () => {
-    if (!avatarRef.current) return;
-    avatarRef.current.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)`;
-  };
+
+
+  const allSkills = [
+    { name: "Splunk Enterprise", category: "siem" },
+    { name: "Wazuh SIEM", category: "siem" },
+    { name: "ELK / Elastic Stack", category: "siem" },
+    { name: "Universal Forwarders", category: "siem" },
+    { name: "SPL Correlation Alerts", category: "siem" },
+    { name: "Log Ingestion & Parsing", category: "siem" },
+
+    { name: "MITRE ATT&CK Mapping", category: "threat" },
+    { name: "Threat Intelligence (VirusTotal/AbuseIPDB)", category: "threat" },
+    { name: "Attack Pattern Analysis (Brute-Force, C2)", category: "threat" },
+    { name: "Incident Triage & Forensics", category: "threat" },
+    { name: "Wireshark Packet Analysis", category: "threat" },
+    { name: "Blue Team Labs (BTLO)", category: "threat" },
+    { name: "LetsDefend SOC", category: "threat" },
+
+    { name: "Network Pentesting", category: "pentest" },
+    { name: "Web App Security (OWASP Top 10)", category: "pentest" },
+    { name: "Active Directory Attacks & Defense", category: "pentest" },
+    { name: "Vulnerability Assessment (VAPT)", category: "pentest" },
+    { name: "Burp Suite Professional", category: "pentest" },
+    { name: "Metasploit Framework", category: "pentest" },
+    { name: "Nmap & Network Recon", category: "pentest" },
+
+    { name: "Python Security Automation", category: "tools" },
+    { name: "Bash & Linux Shell Scripting", category: "tools" },
+    { name: "PowerShell & Windows Internals", category: "tools" },
+    { name: "Ubuntu & Kali Linux", category: "tools" },
+    { name: "TCP/IP & Firewall Engineering", category: "tools" }
+  ];
+
+  const filteredSkills = activeTab === 'all' 
+    ? allSkills 
+    : allSkills.filter(s => s.category === activeTab);
 
   const projects = [
     {
-      title: "Detecting SSH Brute Force Attacks using Splunk",
-      subtitle: "Hands-on SOC Project",
+      title: "Production-Grade Enterprise SOC & SIEM Lab",
+      badge: "Defensive Operations",
+      subtitle: "Enterprise Telemetry Ingestion, Threat Hunting & MITRE ATT&CK Mapping",
       desc: (
         <>
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '0.8rem' }}>
-            Built a real-world detection workflow using Splunk to identify suspicious Linux SSH login activity and trigger alerts.
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.7' }}>
+            Architected and deployed an end-to-end multi-endpoint SOC telemetry pipeline hosted on an Ubuntu Server backbone. Centralized security event monitoring across heterogeneous Linux and Windows nodes using Splunk Enterprise and Universal Forwarders.
           </p>
-          <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-            <li>Ingested Linux auth logs into Splunk and identified repeated "Failed password" attempts.</li>
-            <li>Extracted attacker IP using SPL and built detection logic using stats and thresholds.</li>
-            <li>Successfully detected brute force attempts and created real-time alerts with email notification.</li>
+          <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <li>Configured Universal Forwarders to ingest, parse, and normalize Linux auth logs, Windows Event Logs (Security/Sysmon), and network telemetry.</li>
+            <li>Simulated real-world adversary campaigns (SSH brute-force, anomalous privilege escalation, port sweeps) in a controlled environment.</li>
+            <li>Engineered custom Splunk SPL correlation searches aligned with <strong>MITRE ATT&CK (T1110)</strong>, triggering real-time automated email notifications with sub-minute alert latency.</li>
+            <li>Integrated automated threat intelligence lookup workflows via <strong>VirusTotal</strong> and <strong>AbuseIPDB</strong> REST APIs to enrich suspicious external IPs on the fly.</li>
           </ul>
-          <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', fontFamily: 'monospace' }}>
-            <div style={{ color: 'var(--accent-secondary)', marginBottom: '0.3rem', fontSize: '0.85rem' }}>SPL Query:</div>
-            <div style={{ color: '#e2e8f0', fontSize: '0.9rem' }}>
-              | rex "from (?&lt;src_ip&gt;\d+\.\d+\.\d+\.\d+)"<br/>
-              | stats count by src_ip<br/>
-              | where count &gt; 10
-            </div>
+          <div className="code-snippet">
+            <div className="code-snippet-title">Production Splunk Correlation Logic (SPL):</div>
+            <code>
+              index=security_logs sourcetype="linux_secure" "Failed password"<br/>
+              | rex field=_raw "from (?&lt;src_ip&gt;\d+\.\d+\.\d+\.\d+) port"<br/>
+              | stats count as failed_attempts, earliest(_time) as first_seen, latest(_time) as last_seen by src_ip, user<br/>
+              | where failed_attempts &gt; 8<br/>
+              | eval attack_type="SSH_Brute_Force", mitre_technique="T1110"
+            </code>
           </div>
         </>
       ),
-      tech: ["Splunk", "SIEM", "Log Analysis", "Threat Detection", "SOC Workflow"],
+      tech: ["Splunk Enterprise", "Universal Forwarder", "Wazuh", "Ubuntu Server", "MITRE ATT&CK", "VirusTotal API", "AbuseIPDB"],
       github: "",
       live: "https://lnkd.in/gSsydSd2"
     },
     {
-      title: "PhishGuard+: Real-Time Heuristic Phishing Detection",
-      subtitle: "Offenso Hackers Academy | Jan 2026",
+      title: "PhishGuard+: AI-Driven Real-Time Phishing Threat Detection",
+      badge: "Machine Learning & Endpoint Defense",
+      subtitle: "Heuristic URL Entropy Analysis & Multi-AV Threat Intelligence",
       desc: (
-        <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-secondary)' }}>
-          <li>Built a Chrome browser extension that detects phishing URLs in real time using heuristic rules and VirusTotal API.</li>
-          <li>Achieved 91.5% detection accuracy on 200 test URLs — 88 true positives, only 5 false positives.</li>
-          <li>Detects combosquatting (e.g. paypal-login.xyz) by checking brand names in subdomains vs root domains.</li>
-          <li>Scans downloaded files against 70+ antivirus engines via VirusTotal hash lookup before execution.</li>
-        </ul>
+        <>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.7' }}>
+            Engineered an intelligent endpoint extension that inspects incoming URLs and file downloads in real time using lexical heuristics, domain reputation entropy, and automated multi-engine scanning.
+          </p>
+          <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <li>Achieved <strong>91.5% classification accuracy</strong> across 200 benchmark test URLs (88 true positives with only 5 false positives).</li>
+            <li>Developed combosquatting and typosquatting detection algorithms by cross-referencing high-value brand names in subdomains against apex domain registries (e.g. paypal-auth.xyz).</li>
+            <li>Integrated VirusTotal API to compute and query cryptographic SHA-256 hashes against 70+ threat feeds prior to payload execution.</li>
+            <li>Engineered an intuitive alert interface providing SOC-ready severity indicators and actionable safety recommendations for end users.</li>
+          </ul>
+        </>
       ),
-      tech: ["JavaScript", "Chrome Extension API", "VirusTotal API"],
+      tech: ["Python", "JavaScript", "Machine Learning Heuristics", "Chrome API", "VirusTotal API", "Entropy Analysis"],
       github: "https://github.com/sujinsabu/project.git",
       live: "#"
+    },
+    {
+      title: "Practical Incident Investigation & Threat Hunting",
+      badge: "Incident Response",
+      subtitle: "Hands-On Defense Scenarios — LetsDefend, BTLO & TryHackMe",
+      desc: (
+        <>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.7' }}>
+            Investigated, triaged, and resolved simulated enterprise security incidents simulating sophisticated adversary tactics across endpoints and network segments.
+          </p>
+          <ul style={{ paddingLeft: '1.2rem', color: 'var(--text-secondary)', marginBottom: '1.2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <li>Analyzed live telemetry, memory dumps, and PCAP packet streams with <strong>Wireshark</strong> to isolate command-and-control (C2) beaconing and credential theft.</li>
+            <li>Formulated structured Incident Response (IR) reports detailing complete timeline reconstruction, threat actor attribution, and root-cause findings.</li>
+            <li>Provided prioritized host-based and network-level mitigation actions (firewall rule adjustments, GPO hardening, credential rotation).</li>
+          </ul>
+        </>
+      ),
+      tech: ["Wireshark", "Network Forensics", "LetsDefend", "BTLO", "TryHackMe", "Incident Response Reporting", "CVSS Scoring"],
+      github: "",
+      live: "https://medium.com/@sujinsabu2617"
     }
   ];
 
-  const tools = ["Burp Suite", "Metasploit", "Nmap", "Wireshark", "Nessus", "Nikto", "Splunk", "Hydra", "John the Ripper", "Aircrack-ng"];
-  const domains = ["Network Pentesting", "Web App Security", "Wireless Security", "Android Pentesting", "Active Directory Attacks", "SIEM", "SOC Analysis"];
-  const platforms = ["TryHackMe", "Blue Team Labs Online (BTLO)", "LetsDefend", "PortSwigger Web Security Academy"];
-  const languagesOs = ["Python", "Bash", "SQL", "Kali Linux", "Parrot OS", "Ubuntu", "Windows Server"];
+  const latexResumeCode = `\\documentclass[letterpaper,10pt]{article}
+\\usepackage{latexsym}
+\\usepackage[empty]{fullpage}
+\\usepackage{titlesec}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage{charter}
+\\usepackage[top=0.55in, bottom=0.55in, left=0.6in, right=0.6in]{geometry}
+
+\\begin{document}
+\\begin{center}
+    {\\Huge \\scshape Sujin Sabu} \\\\ \\vspace{3pt}
+    \\small \\textbf{Kollam, Kerala, India} \\ $|$ \\ +91 9747886284 \\ $|$ \\ \\href{mailto:sujinsabu2617@gmail.com}{sujinsabu2617@gmail.com} \\\\
+    \\small \\href{https://www.linkedin.com/in/sujin-sabu-671392229}{linkedin.com/in/sujin-sabu-671392229} \\ $|$ \\ Open to: India, Gulf, Remote
+\\end{center}
+
+\\section*{Professional Summary}
+Results-driven \\textbf{Cybersecurity Professional \\& SOC Analyst} with a strong foundation in Computer Science Engineering and hands-on expertise in enterprise security monitoring, threat detection, and incident triage. Proven capability in architecting production-grade SIEM environments (Splunk, Wazuh, ELK Stack), deploying universal forwarders, and constructing custom correlation rules mapped to the MITRE ATT\\&CK framework.
+
+\\section*{Core Competencies}
+\\textbf{SIEM \\& Monitoring:} Splunk Enterprise, Wazuh, ELK Stack, Universal Forwarder, Ingestion, SPL Alerts \\\\
+\\textbf{Threat Detection \\& IR:} MITRE ATT\\&CK, Attack Pattern Analysis (Brute-Force, C2), IOC Triage, VirusTotal API \\\\
+\\textbf{Network \\& Security:} TCP/IP, DNS, Firewalls, IDS/IPS, Active Directory, Linux/Windows Internals, VAPT \\\\
+\\textbf{Tools \\& Platforms:} Splunk, Wazuh, Wireshark, Nmap, Burp Suite, Metasploit, Kali Linux, LetsDefend, BTLO
+
+\\section*{Projects \\& Engineering}
+\\textbf{Production-Grade Enterprise SOC \\& SIEM Lab} \\hfill Self-Directed Lab \\\\
+- Architected virtual SOC monitoring environment on Ubuntu Server; ingested syslog and Windows Event Logs. \\\\
+- Simulated SSH brute-force attacks and engineered custom SPL correlation searches mapped to MITRE ATT\\&CK (T1110). \\\\
+\\textbf{PhishGuard+ — AI-Driven Phishing Detection} \\hfill Security Project \\\\
+- Developed ML phishing detection engine achieving 91.5\\% accuracy across 200 benchmark test URLs.
+
+\\section*{Certifications}
+- \\textbf{CompTIA Security+ ce Certification} --- CompTIA (Active) \\\\
+- \\textbf{Offenso Certified Security Professional (OCSP)} --- Offenso Hackers Academy \\\\
+- \\textbf{Comprehensive Cybersecurity Training Program} --- Offenso Hackers Academy (Aug 2025)
+
+\\section*{Education}
+\\textbf{Bachelor of Technology (B.Tech) in Computer Science \\& Engineering} \\hfill 2021 -- 2025 \\\\
+UKF College of Engineering and Technology | APJ Abdul Kalam Technological University
+\\end{document}`;
 
   return (
     <>
@@ -99,157 +222,171 @@ function App() {
       {/* Navigation */}
       <nav className="navbar">
         <div className="container nav-content">
-          <div className="logo text-accent">
-            <Shield size={24} />
+          <a href="#" className="logo text-accent">
+            <Shield size={24} className="text-cyan" />
             <span>Sujin.sec</span>
-          </div>
+          </a>
           <div className="nav-links">
-            <a href="#about">Profile</a>
-            <a href="#projects">Key Project</a>
-            <a href="#training">Training</a>
+            <a href="#about">Overview</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Operations & Labs</a>
+            <a href="#certifications">Credentials</a>
+            <a href="#education">Education</a>
             <a href="#contact">Contact</a>
-            <a href="/Sujin_Sabu_Resume.pdf" download="Sujin_Sabu_Resume.pdf" className="nav-btn" style={{textDecoration: 'none'}}>Resume</a>
+            <button 
+              onClick={() => setResumeModalOpen(true)} 
+              className="nav-btn"
+              title="Open Interactive Resume Viewer"
+            >
+              <FileText size={15} /> Resume View
+            </button>
           </div>
         </div>
       </nav>
 
       <main className="container">
         {/* Hero Section */}
-        <section className="section hero" style={{ opacity: 1, transform: 'translateY(0)', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
-          <div className="hero-content" style={{ flex: '1 1 500px' }}>
-            <h1 className="hero-title">Sujin Sabu</h1>
-            <h2 className="hero-subtitle">
-              <span className="text-accent">Cybersecurity Professional</span> | Ethical Hacker | Security Analyst
-            </h2>
-            <p className="hero-desc">
-              OCSP-certified cybersecurity professional with a B.Tech in Computer Science. 
-              Trained in Network, Web Application, Wireless, Android, and Active Directory Penetration Testing, 
-              along with SIEM and SOC operations. Hands-on practice through TryHackMe, BTLO, LetsDefend, and PortSwigger.
-              Skilled in Burp Suite, Metasploit, Nmap, and Wireshark. Targeting a Security Analyst or Ethical Hacker role.
-            </p>
-            <div className="hero-actions">
-              <a href="#projects" className="btn">
-                <Zap size={18} /> View Operations
-              </a>
-              <a href="https://linkedin.com/in/sujin-sabu-671392229" target="_blank" rel="noreferrer" className="btn" style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }}>
-                <LinkIcon size={18} /> LinkedIn
-              </a>
-              <a href="https://medium.com/@sujinsabu2617" target="_blank" rel="noreferrer" className="btn" style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.2)' }}>
-                <PenTool size={18} /> Medium
-              </a>
-            </div>
+        <section id="about" className="section hero">
+          <div className="hero-status-pill">
+            <span className="status-dot"></span>
+            <span>Available for SOC Analyst & Threat Detection Opportunities</span>
           </div>
+
+          <h1 className="hero-title">Sujin Sabu</h1>
           
-          <div 
-            className="hero-avatar-container" 
-            style={{ 
-              flex: '1 1 300px', 
-              display: 'flex', 
-              justifyContent: 'center',
-              perspective: '1000px'
-            }}
-          >
-            <div 
-              ref={avatarRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                width: '350px',
-                height: '350px',
-                borderRadius: '30px',
-                background: 'rgba(217, 70, 239, 0.1)',
-                border: '2px solid var(--accent-primary)',
-                boxShadow: '0 0 40px rgba(217, 70, 239, 0.3), inset 0 0 20px rgba(6, 182, 212, 0.2)',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.1s ease-out',
-                cursor: 'pointer'
-              }}
-            >
-              <img 
-                src="/avatar.png" 
-                alt="Sujin Sabu Anime Avatar" 
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.9
-                }}
-              />
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(217, 70, 239, 0.2), rgba(6, 182, 212, 0.2))', mixBlendMode: 'overlay', pointerEvents: 'none' }}></div>
+          <h2 className="hero-subtitle">
+            <span className="text-accent">Cybersecurity Professional</span> & SOC Analyst
+          </h2>
+
+          <div className="hero-badges-row">
+            <span className="cert-pill"><Award size={14} /> CompTIA Security+ ce</span>
+            <span className="cert-pill"><Shield size={14} /> OCSP Certified</span>
+            <span className="cert-pill"><Activity size={14} /> Splunk & Wazuh SIEM</span>
+            <span className="cert-pill"><Lock size={14} /> MITRE ATT&CK</span>
+            <span className="cert-pill"><Cpu size={14} /> B.Tech CSE (2021–2025)</span>
+          </div>
+
+          <p className="hero-desc">
+            Specialized in enterprise security monitoring, threat detection engineering, and incident response. 
+            Hands-on experience architecting production-grade SIEM environments (Splunk, Wazuh, ELK), 
+            correlating telemetry against the MITRE ATT&CK framework, and developing AI-assisted threat detection engines.
+            Combining rigorous Computer Science Engineering foundations with practical defensive tradecraft.
+          </p>
+
+          <div className="hero-actions">
+            <a href="#projects" className="btn btn-primary">
+              <Zap size={18} /> View Security Operations
+            </a>
+            <button onClick={() => setResumeModalOpen(true)} className="btn btn-outline">
+              <Eye size={18} /> Interactive Resume
+            </button>
+            <a href={`${import.meta.env.BASE_URL}Sujin_Sabu_Resume.pdf`} download="Sujin_Sabu_Resume.pdf" className="btn" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <Download size={18} /> Download ATS PDF
+            </a>
+          </div>
+        </section>
+
+        {/* Impact Metrics Bar */}
+        <div className="metrics-grid">
+          <div className="metric-card">
+            <div className="metric-number">91.5%</div>
+            <div className="metric-label">Phishing Detection Accuracy (PhishGuard+)</div>
+          </div>
+          <div className="metric-card">
+            <div className="metric-number">&lt; 60s</div>
+            <div className="metric-label">Adversary Detection Latency (Splunk T1110)</div>
+          </div>
+          <div className="metric-card">
+            <div className="metric-number">10+</div>
+            <div className="metric-label">Full VAPT & Enterprise Targets Assessed</div>
+          </div>
+          <div className="metric-card">
+            <div className="metric-number">3</div>
+            <div className="metric-label">Industry Certifications & Credentials</div>
+          </div>
+        </div>
+
+        {/* Skills Section */}
+        <section id="skills" className="section">
+          <h2 className="section-title">
+            <Layers className="text-cyan" size={28} /> Core Competencies & Tooling
+          </h2>
+
+          <div className="glass-panel" style={{ padding: '2.5rem' }}>
+            <div className="tabs-container">
+              <button 
+                className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                All Capabilities ({allSkills.length})
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'siem' ? 'active' : ''}`}
+                onClick={() => setActiveTab('siem')}
+              >
+                SIEM & Monitoring
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'threat' ? 'active' : ''}`}
+                onClick={() => setActiveTab('threat')}
+              >
+                Threat Hunting & IR
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'pentest' ? 'active' : ''}`}
+                onClick={() => setActiveTab('pentest')}
+              >
+                Offensive & VAPT
+              </button>
+              <button 
+                className={`tab-btn ${activeTab === 'tools' ? 'active' : ''}`}
+                onClick={() => setActiveTab('tools')}
+              >
+                Automation & Protocols
+              </button>
+            </div>
+
+            <div className="skills-cloud">
+              {filteredSkills.map((skill, i) => (
+                <span key={i} className="skill-tag">
+                  <CheckCircle2 size={14} className="text-cyan" />
+                  {skill.name}
+                </span>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* About / Skills Section */}
-        <section id="about" className="section">
-          <h2 className="section-title">Technical Skills</h2>
-          <div className="glass-panel" style={{ padding: '3.5rem 2.5rem' }}>
-            <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap' }}>
-              
-              <div style={{ flex: '1 1 300px' }}>
-                <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Crosshair size={22} /> Tools</h3>
-                <div className="skills-container" style={{ marginTop: '0', marginBottom: '2.5rem' }}>
-                  {tools.map((skill, i) => (
-                    <span key={i} className="skill-tag">{skill}</span>
-                  ))}
-                </div>
-
-                <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MapIcon size={22} /> Domains</h3>
-                <div className="skills-container" style={{ marginTop: '0' }}>
-                  {domains.map((skill, i) => (
-                    <span key={i} className="skill-tag" style={{ borderLeft: '3px solid var(--accent-secondary)' }}>{skill}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ flex: '1 1 300px' }}>
-                <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Activity size={22} /> Platforms</h3>
-                <div className="skills-container" style={{ marginTop: '0', marginBottom: '2.5rem' }}>
-                  {platforms.map((skill, i) => (
-                    <span key={i} className="skill-tag" style={{ borderLeft: '3px solid var(--accent-secondary)' }}>{skill}</span>
-                  ))}
-                </div>
-
-                <h3 className="text-accent" style={{ marginBottom: '1rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Cpu size={22} /> Languages & OS</h3>
-                <div className="skills-container" style={{ marginTop: '0' }}>
-                  {languagesOs.map((skill, i) => (
-                    <span key={i} className="skill-tag">{skill}</span>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
+        {/* Key Security Operations & Projects */}
         <section id="projects" className="section">
-          <h2 className="section-title">Key Project</h2>
-          <div className="projects-grid" style={{ gridTemplateColumns: 'minmax(300px, 900px)' }}>
+          <h2 className="section-title">
+            <Terminal className="text-cyan" size={28} /> Security Engineering & Operations
+          </h2>
+
+          <div className="projects-grid">
             {projects.map((project, i) => (
               <div key={i} className="glass-panel project-card">
                 <div className="project-header">
-                  <Star size={36} className="text-accent" fill="url(#gradient)" />
-                  <svg width="0" height="0">
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop stopColor="var(--accent-secondary)" offset="0%" />
-                      <stop stopColor="var(--accent-primary)" offset="100%" />
-                    </linearGradient>
-                  </svg>
+                  <span className="project-badge">{project.badge}</span>
                   <div style={{ display: 'flex', gap: '0.8rem' }}>
-                    {project.github && project.github !== "#" && (
-                      <a href={project.github} aria-label="GitHub" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)' }} onMouseOver={e=>e.currentTarget.style.color='#fff'} onMouseOut={e=>e.currentTarget.style.color='var(--text-secondary)'}><Code size={24} /></a>
+                    {project.github && (
+                      <a href={project.github} aria-label="GitHub Repository" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)' }} onMouseOver={e=>e.currentTarget.style.color='#fff'} onMouseOut={e=>e.currentTarget.style.color='var(--text-secondary)'} title="View Source Code">
+                        <Code size={22} />
+                      </a>
                     )}
                     {project.live && project.live !== "#" && (
-                      <a href={project.live} aria-label="Write-up/Live" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)' }} onMouseOver={e=>e.currentTarget.style.color='#fff'} onMouseOut={e=>e.currentTarget.style.color='var(--text-secondary)'}><ExternalLink size={24} /></a>
+                      <a href={project.live} aria-label="Live Demo / Write-up" target="_blank" rel="noreferrer" style={{ color: 'var(--text-secondary)' }} onMouseOver={e=>e.currentTarget.style.color='#fff'} onMouseOut={e=>e.currentTarget.style.color='var(--text-secondary)'} title="View Write-up / Live Reference">
+                        <ExternalLink size={22} />
+                      </a>
                     )}
                   </div>
                 </div>
-                <h3 className="project-title" style={{ fontSize: '1.8rem' }}>{project.title}</h3>
-                <p style={{ color: 'var(--accent-secondary)', fontWeight: '600', marginBottom: '1.5rem', fontSize: '0.9rem' }}>{project.subtitle}</p>
-                <div className="project-desc" style={{ fontSize: '1.05rem' }}>{project.desc}</div>
-                <div className="tech-stack" style={{ marginTop: '2rem' }}>
+
+                <h3 className="project-title">{project.title}</h3>
+                <p className="project-subtitle">{project.subtitle}</p>
+                <div className="project-desc">{project.desc}</div>
+
+                <div className="tech-stack">
                   {project.tech.map((tech, j) => (
                     <span key={j}>{tech}</span>
                   ))}
@@ -258,96 +395,287 @@ function App() {
             ))}
           </div>
         </section>
-        
-        {/* Training & Education Section */}
-        <section id="training" className="section">
-          <h2 className="section-title">Training & Experience</h2>
-          <div className="projects-grid" style={{ gridTemplateColumns: '1fr' }}>
-            
-            <div className="glass-panel project-card" style={{ marginBottom: '1.5rem', padding: '2.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', fill: 'inherit' }}>
-                <h3 className="project-title text-accent" style={{ marginBottom: '0.2rem', fontSize: '1.5rem' }}>Offenso Certified Security Professional (OCSP)</h3>
-                <span style={{ fontWeight: '600', color: 'var(--accent-secondary)' }}>Aug 2025 – Mar 2026</span>
-              </div>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontStyle: 'italic' }}>Offenso Hackers Academy, Trivandrum</p>
-              
-              <ul style={{ color: 'var(--text-secondary)', paddingLeft: '1.2rem', margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '1.05rem', lineHeight: '1.6' }}>
-                <li>Trained in 9 domains: Network, Web App, Wireless, Android, Active Directory Pentesting, Microsoft Security, SIEM, SOC, and Reporting.</li>
-                <li>Ran full VAPT cycles — recon, scanning, exploitation, and reporting — on 10+ simulated enterprise targets.</li>
-                <li>Completed 15+ rooms on TryHackMe, 10+ BTLO challenges, 15+ LetsDefend SOC investigations, and OWASP Top 10 labs on PortSwigger.</li>
-                <li>Wrote structured VAPT reports with CVSS scores, proof-of-concept evidence, and remediation steps for each finding.</li>
-              </ul>
-            </div>
-            
-            <h2 className="section-title" style={{ marginTop: '3rem', fontSize: '2rem' }}>Education & Certifications</h2>
 
-            <div className="glass-panel project-card" style={{ marginBottom: '1.5rem', padding: '2.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-                <h3 className="project-title text-accent" style={{ fontSize: '1.4rem' }}>B.Tech — Computer Science Engineering</h3>
-                <span style={{ fontWeight: '600', color: 'var(--accent-secondary)' }}>Dec 2021 – Jun 2025</span>
+        {/* Certifications Section */}
+        <section id="certifications" className="section">
+          <h2 className="section-title">
+            <Award className="text-cyan" size={28} /> Certifications & Credentials
+          </h2>
+
+          <div className="certs-grid">
+            <div className="cert-card">
+              <div>
+                <div className="cert-header">
+                  <span className="cert-pill" style={{ background: 'rgba(16, 185, 129, 0.1)', borderColor: 'rgba(16, 185, 129, 0.3)', color: '#34d399' }}>Active Credential</span>
+                  <Award size={24} className="text-accent" />
+                </div>
+                <h3 className="cert-title">CompTIA Security+ ce</h3>
+                <p className="cert-issuer">CompTIA — Globally Recognized Defense Standard</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                  Validates baseline cybersecurity capabilities spanning network security, threat vectors, cryptography, identity management, risk mitigation, and security architecture.
+                </p>
               </div>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontStyle: 'italic' }}>UKF College of Engineering and Technology, APJ Abdul Kalam Technological University, Kollam</p>
-              <p style={{ color: 'var(--text-primary)', fontSize: '1.05rem' }}>
-                <strong style={{ color: 'var(--text-secondary)' }}>Coursework:</strong> Computer Networks, OS, DBMS, Data Structures
-              </p>
             </div>
 
-            <div className="glass-panel project-card" style={{ padding: '2.5rem' }}>
-              <h3 className="project-title text-accent" style={{ fontSize: '1.4rem' }}>Certifications</h3>
-              <ul style={{ color: 'var(--text-secondary)', paddingLeft: '1.2rem', margin: 0, marginTop: '1.5rem', fontSize: '1.05rem' }}>
-                <li>Offenso Certified Security Professional (OCSP) — Offenso Hackers Academy</li>
-              </ul>
+            <div className="cert-card">
+              <div>
+                <div className="cert-header">
+                  <span className="cert-pill">Practical Certification</span>
+                  <Shield size={24} className="text-cyan" />
+                </div>
+                <h3 className="cert-title">Offenso Certified Security Professional (OCSP)</h3>
+                <p className="cert-issuer">Offenso Hackers Academy</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                  Hands-on practical certification testing real-world vulnerability assessment, penetration testing across 9 core domains, and structured risk mitigation reporting.
+                </p>
+              </div>
+            </div>
+
+            <div className="cert-card">
+              <div>
+                <div className="cert-header">
+                  <span className="cert-pill">Intensive Training</span>
+                  <Activity size={24} className="text-accent" />
+                </div>
+                <h3 className="cert-title">Cybersecurity & SOC Operations Training</h3>
+                <p className="cert-issuer">Offenso Hackers Academy | Aug 2025 – Mar 2026</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
+                  Intensive program covering enterprise SIEM deployment (Splunk/ELK), network & web application VAPT, Active Directory auditing, and live triage on LetsDefend, BTLO, and TryHackMe.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Education Section */}
+        <section id="education" className="section">
+          <h2 className="section-title">
+            <Cpu className="text-cyan" size={28} /> Education & Engineering Background
+          </h2>
+
+          <div className="glass-panel" style={{ padding: '2.5rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.8rem', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontSize: '1.45rem', fontWeight: '700', color: '#fff' }}>
+                Bachelor of Technology (B.Tech) in Computer Science & Engineering
+              </h3>
+              <span style={{ fontWeight: '600', color: 'var(--accent-secondary)', background: 'rgba(6, 182, 212, 0.1)', padding: '0.3rem 0.8rem', borderRadius: '8px', fontSize: '0.9rem' }}>
+                2021 – 2025
+              </span>
             </div>
             
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.2rem', fontStyle: 'italic', fontSize: '0.95rem' }}>
+              UKF College of Engineering and Technology | APJ Abdul Kalam Technological University (KTU), Kollam
+            </p>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <strong style={{ color: '#fff', fontSize: '0.95rem' }}>Foundational Cybersecurity & Engineering Coursework:</strong>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.6rem' }}>
+                {["Computer Networks (TCP/IP & Routing)", "Operating Systems (Linux/Unix Internals)", "Cryptography & Network Security", "Database Management Systems (SQL)", "Object-Oriented Design"].map((course, idx) => (
+                  <span key={idx} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '0.25rem 0.65rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    {course}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.7', marginTop: '1rem' }}>
+              Built a comprehensive theoretical and practical foundation in data communication, process memory management, and algorithm design, which is directly channeled into defensive SIEM correlation engineering and protocol-level packet analysis.
+            </p>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem' }}>
+              <div>
+                <h4 style={{ fontSize: '1.15rem', fontWeight: '600', color: '#fff' }}>Higher Secondary Education (10+2) – Computer Science</h4>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.2rem' }}>St. Mary's Higher Secondary School</p>
+              </div>
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Completed 2019</span>
+            </div>
           </div>
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="section" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <h2 className="section-title" style={{ justifyContent: 'center' }}>Contact</h2>
-          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem auto', fontSize: '1.1rem' }}>
-            My inbox is open for new opportunities. Let's build something secure together.
+        <section id="contact" className="section" style={{ minHeight: '55vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <h2 className="section-title" style={{ justifyContent: 'center' }}>
+            <Mail className="text-cyan" size={28} /> Initiate Handshake
+          </h2>
+          
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '620px', margin: '0 auto 2.5rem auto', fontSize: '1.08rem' }}>
+            Looking for a dedicated SOC Analyst or Cybersecurity Professional for full-time, contract, or remote roles in India, the Gulf region, or globally.
           </p>
           
-          <div className="glass-panel" style={{ maxWidth: '600px', margin: '0 auto', padding: '4rem 2rem', textAlign: 'center' }}>
-            <div style={{ display: 'inline-flex', padding: '1.2rem', background: 'rgba(217, 70, 239, 0.1)', border: '1px solid rgba(217, 70, 239, 0.2)', borderRadius: '50%', marginBottom: '1.5rem', boxShadow: '0 0 20px rgba(217, 70, 239, 0.2)' }}>
-              <Mail size={42} className="text-accent" />
+          <div className="glass-panel" style={{ maxWidth: '680px', margin: '0 auto', padding: '3.5rem 2rem', textAlign: 'center', width: '100%' }}>
+            <div style={{ display: 'inline-flex', padding: '1.2rem', background: 'rgba(217, 70, 239, 0.1)', border: '1px solid rgba(217, 70, 239, 0.25)', borderRadius: '50%', marginBottom: '1.5rem', boxShadow: '0 0 25px rgba(217, 70, 239, 0.2)' }}>
+              <Mail size={38} className="text-accent" />
             </div>
-            <h3 style={{ fontSize: '2rem', color: '#fff', marginBottom: '1rem', fontWeight: '800' }}>Initiate Handshake</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.05rem' }}>
-              Whether you have a question or just want to say hi, I'll try my best to get back to you!
+
+            <h3 style={{ fontSize: '1.8rem', color: '#fff', marginBottom: '0.8rem', fontWeight: '800' }}>
+              Let's Connect & Secure Systems
+            </h3>
+            
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '2.5rem', fontSize: '1rem' }}>
+              Drop an email or connect directly on LinkedIn or WhatsApp.
             </p>
             
-            <a href="mailto:sujinsabu2617@gmail.com" className="btn" style={{ fontSize: '1.1rem', padding: '1rem 2.5rem' }}>
-              <Mail size={20} /> SEND VIA EMAIL
-            </a>
-            
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '4rem', flexWrap: 'wrap' }}>
-              <a href="https://linkedin.com/in/sujin-sabu-671392229" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-secondary)', transition: 'color 0.3s', textDecoration: 'none', fontWeight: '500' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
-                <LinkIcon size={20} /> LinkedIn
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '3rem' }}>
+              <a href="mailto:sujinsabu2617@gmail.com" className="btn btn-primary" style={{ padding: '0.9rem 2rem' }}>
+                <Mail size={18} /> Send Email
               </a>
-              <a href="https://medium.com/@sujinsabu2617" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-secondary)', transition: 'color 0.3s', textDecoration: 'none', fontWeight: '500' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
-                <PenTool size={20} /> Medium
+              <button 
+                onClick={() => handleCopy('+919747886284', 'phone')} 
+                className="btn btn-outline" 
+                style={{ padding: '0.9rem 1.8rem' }}
+              >
+                {copiedContact === 'phone' ? <Check size={18} className="text-emerald" /> : <Phone size={18} />}
+                {copiedContact === 'phone' ? "Number Copied!" : "+91 9747886284"}
+              </button>
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2rem' }}>
+              <a href="https://linkedin.com/in/sujin-sabu-671392229" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }} onMouseOver={e => e.currentTarget.style.color = '#fff'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+                <LinkIcon size={18} /> LinkedIn
+              </a>
+              <a href="https://medium.com/@sujinsabu2617" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', textDecoration: 'none', fontWeight: '500' }} onMouseOver={e => e.currentTarget.style.color = '#fff'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+                <PenTool size={18} /> Medium Write-ups
               </a>
               <span 
-                onClick={handleCopy}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: copied ? 'var(--accent-primary)' : 'var(--text-secondary)', fontWeight: '500', cursor: 'pointer', transition: 'color 0.3s' }}
-                onMouseOver={(e) => !copied && (e.currentTarget.style.color = '#fff')} 
-                onMouseOut={(e) => !copied && (e.currentTarget.style.color = 'var(--text-secondary)')}
-                title="Copy WhatsApp Number"
+                onClick={() => handleCopy('+919747886284', 'wa')}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: copiedContact === 'wa' ? 'var(--accent-secondary)' : 'var(--text-secondary)', cursor: 'pointer', fontWeight: '500' }}
+                title="Copy WhatsApp"
               >
-                <MessageCircle size={20} /> {copied ? "Number Copied!" : "+91-9747886284 (WA)"}
-              </span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-secondary)', fontWeight: '500' }}>
-                <MapIcon size={20} /> Kerala, IN
+                <MessageCircle size={18} /> {copiedContact === 'wa' ? "WhatsApp Copied!" : "WhatsApp"}
               </span>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="footer" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <p>Built by Sujin Sabu. All rights reserved &copy; {new Date().getFullYear()}</p>
+      {/* Interactive Resume Modal (Skill: creative-portfolio-resume bridge) */}
+      {resumeModalOpen && (
+        <div className="modal-backdrop" onClick={() => setResumeModalOpen(false)}>
+          <div className="modal-container" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <FileText size={22} className="text-cyan" />
+                <h3 className="modal-title">ATS Resume & Formats</h3>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div className="modal-tabs">
+                  <button 
+                    className={`modal-tab-btn ${resumeViewTab === 'preview' ? 'active' : ''}`}
+                    onClick={() => setResumeViewTab('preview')}
+                  >
+                    Clean ATS Paper
+                  </button>
+                  <button 
+                    className={`modal-tab-btn ${resumeViewTab === 'latex' ? 'active' : ''}`}
+                    onClick={() => setResumeViewTab('latex')}
+                  >
+                    LaTeX Source
+                  </button>
+                </div>
+                <button 
+                  className="modal-close-btn" 
+                  onClick={() => setResumeModalOpen(false)}
+                  aria-label="Close Modal"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-body">
+              {resumeViewTab === 'preview' ? (
+                <div className="resume-paper">
+                  <h1>SUJIN SABU</h1>
+                  <div className="resume-contact">
+                    Kollam, Kerala, India | +91 9747886284 | sujinsabu2617@gmail.com | linkedin.com/in/sujin-sabu-671392229
+                  </div>
+
+                  <h2>Professional Summary</h2>
+                  <p>
+                    Results-driven <strong>Cybersecurity Professional & SOC Analyst</strong> with a strong foundation in Computer Science Engineering and hands-on expertise in enterprise security monitoring, threat detection, and incident triage. Proven capability in architecting production-grade SIEM environments (Splunk, Wazuh, ELK Stack), deploying universal forwarders, and constructing custom correlation rules mapped to the MITRE ATT&CK framework.
+                  </p>
+
+                  <h2>Core Competencies</h2>
+                  <p>
+                    <strong>SIEM & Monitoring:</strong> Splunk Enterprise, Wazuh, ELK Stack, Universal Forwarder, Ingestion, Event Normalization<br/>
+                    <strong>Threat Detection & IR:</strong> MITRE ATT&CK Framework, Attack Pattern Analysis (Brute-Force, C2), IOC Triage, VirusTotal API<br/>
+                    <strong>Network & System Security:</strong> TCP/IP, DNS, Firewalls, IDS/IPS, Active Directory, Linux/Windows Internals, VAPT<br/>
+                    <strong>Tools & Automation:</strong> Splunk, Wazuh, Wireshark, Nmap, Burp Suite, Metasploit, Python, Bash, PowerShell
+                  </p>
+
+                  <h2>Security Engineering & Projects</h2>
+                  <p style={{ marginTop: '0.4rem', fontWeight: 'bold' }}>Production-Grade Enterprise SOC & SIEM Lab | Splunk, Wazuh, Ubuntu Server, MITRE ATT&CK</p>
+                  <ul>
+                    <li>Architected and managed an enterprise SOC monitoring environment on an Ubuntu Server backbone with multi-OS telemetry.</li>
+                    <li>Configured Splunk Enterprise and Universal Forwarders to parse and normalize syslog, Windows Event Logs, and firewall events.</li>
+                    <li>Simulated adversary tactics (SSH brute-force, privilege escalation) and created custom SPL alerts mapped to MITRE ATT&CK (T1110).</li>
+                    <li>Integrated automated threat intelligence enrichment leveraging VirusTotal and AbuseIPDB REST APIs for fast IOC triage.</li>
+                  </ul>
+
+                  <p style={{ fontWeight: 'bold' }}>PhishGuard+ — AI-Driven Phishing Threat Detection | Python, Machine Learning, Threat Intel</p>
+                  <ul>
+                    <li>Developed an automated machine learning detection system for phishing URLs and email payloads, achieving 91.5% accuracy.</li>
+                    <li>Engineered Python preprocessing pipelines extracting URL lexical heuristics, entropy scores, and domain age reputation metrics.</li>
+                  </ul>
+
+                  <h2>Certifications</h2>
+                  <ul>
+                    <li><strong>CompTIA Security+ ce Certification</strong> — CompTIA (Active)</li>
+                    <li><strong>Offenso Certified Security Professional (OCSP)</strong> — Offenso Hackers Academy</li>
+                    <li><strong>Comprehensive Cybersecurity Training Program</strong> — Offenso Hackers Academy (August 2025)</li>
+                  </ul>
+
+                  <h2>Education</h2>
+                  <p style={{ fontWeight: 'bold' }}>Bachelor of Technology (B.Tech) in Computer Science & Engineering | 2021 – 2025</p>
+                  <p style={{ fontStyle: 'italic', color: '#4b5563' }}>UKF College of Engineering and Technology | APJ Abdul Kalam Technological University</p>
+                  <p>Coursework: Computer Networks, Operating Systems, Cryptography & Network Security, Database Management Systems</p>
+                </div>
+              ) : (
+                <div style={{ position: 'relative' }}>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(latexResumeCode);
+                      setCopiedLatex(true);
+                      setTimeout(() => setCopiedLatex(false), 2000);
+                    }}
+                    className="btn btn-outline"
+                    style={{ position: 'absolute', top: '10px', right: '10px', padding: '0.4rem 0.8rem', fontSize: '0.8rem', zIndex: 10 }}
+                  >
+                    {copiedLatex ? <Check size={14} className="text-emerald" /> : <Copy size={14} />}
+                    {copiedLatex ? "Copied!" : "Copy LaTeX"}
+                  </button>
+                  <pre style={{ background: '#05020a', padding: '1.5rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', color: '#a5b4fc', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', overflowX: 'auto', lineHeight: '1.5' }}>
+                    {latexResumeCode}
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                Both ATS-Compatible PDF & Formats available for recruiters.
+              </span>
+              <div style={{ display: 'flex', gap: '0.8rem' }}>
+                <a href={`${import.meta.env.BASE_URL}Sujin_Sabu_Resume.pdf`} download="Sujin_Sabu_Resume.pdf" className="btn btn-primary" style={{ padding: '0.6rem 1.2rem', fontSize: '0.88rem' }}>
+                  <Download size={16} /> Download PDF
+                </a>
+                <a href={`${import.meta.env.BASE_URL}Sujin_Sabu_Resume.tex`} download="Sujin_Sabu_Resume.tex" className="btn btn-outline" style={{ padding: '0.6rem 1.2rem', fontSize: '0.88rem' }}>
+                  <Code size={16} /> .TEX File
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>Built by Sujin Sabu &bull; Cybersecurity & SOC Operations Portfolio &copy; {new Date().getFullYear()}</p>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+          Designed with modern web standards and ATS compatibility.
+        </p>
       </footer>
     </>
   )

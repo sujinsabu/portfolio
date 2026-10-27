@@ -1,0 +1,154 @@
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{charter}
+
+% Page dimensions and margins
+\usepackage[top=0.55in, bottom=0.55in, left=0.6in, right=0.6in]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% URL style
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.18in, label=\raisebox{0.25ex}{\tiny$\bullet$}]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%
+%-------------------------------------------
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Sujin Sabu} \\ \vspace{3pt}
+    \small \textbf{Kollam, Kerala, India} \ $|$ \ +91 9747886284 \ $|$ \ \href{mailto:sujinsabu2617@gmail.com}{\underline{sujinsabu2617@gmail.com}} \\ \vspace{2pt}
+    \small \href{https://www.linkedin.com/in/sujin-sabu-671392229}{\underline{linkedin.com/in/sujin-sabu-671392229}} \ $|$ \ Open to: India, Gulf Region, Remote
+\end{center}
+
+%-----------PROFESSIONAL SUMMARY-----------
+\section{Professional Summary}
+\small{
+Results-driven \textbf{Cybersecurity Professional \& SOC Analyst} with a strong foundation in Computer Science Engineering and hands-on expertise in enterprise security monitoring, threat detection, and incident triage. Proven capability in architecting production-grade SIEM environments (Splunk, Wazuh, ELK Stack), deploying universal forwarders, and constructing custom correlation rules mapped to the MITRE ATT\&CK framework. Experienced in integrating threat intelligence feeds, performing log forensics, and leveraging Python for security automation to proactively defend critical infrastructure.
+}
+
+%-----------CORE COMPETENCIES-----------
+\section{Core Competencies}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{SIEM \& Monitoring:} Splunk Enterprise, Wazuh, ELK Stack, Universal Forwarder, Log Parsing, Ingestion, Event Normalization \\
+     \textbf{Threat Detection \& IR:} MITRE ATT\&CK Framework, Attack Pattern Analysis (Brute-Force, C2), IOC Triage, Threat Intel (VirusTotal, AbuseIPDB) \\
+     \textbf{Network \& System Security:} TCP/IP, DNS, Firewalls, IDS/IPS, Active Directory, Linux/Unix \& Windows Internals, Vulnerability Assessment \\
+     \textbf{Tools \& Platforms:} Splunk, Wazuh, ELK, Wireshark, Nmap, Burp Suite, Metasploit, Kali Linux, LetsDefend, TryHackMe, BTLO \\
+     \textbf{Automation \& Scripting:} Python (Security Scripting, REST APIs, Log Automation), Bash, PowerShell
+    }}
+\end{itemize}
+
+%-----------PROJECTS & PRACTICAL ENGINEERING-----------
+\section{Security Engineering \& Projects}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {Production-Grade Enterprise SOC \& SIEM Lab \ $|$ \ \emph{Splunk, Wazuh, Linux, MITRE ATT\&CK}}{Self-Directed Lab}
+      \resumeItemListStart
+        \resumeItem{Architected and managed a full-lifecycle virtual SOC monitoring environment on an Ubuntu Server backbone, orchestrating telemetry collection across heterogeneous endpoints.}
+        \resumeItem{Configured \textbf{Splunk Enterprise} and Universal Forwarders; parsed and normalized syslog streams, Windows Event Logs, and firewall events for centralized correlation and dashboarding.}
+        \resumeItem{Simulated adversary tactics (SSH brute-force attacks, privilege escalation, port scanning); engineered custom SPL correlation searches aligned with \textbf{MITRE ATT\&CK (T1110)}.}
+        \resumeItem{Integrated automated threat intelligence enrichment leveraging \textbf{VirusTotal} and \textbf{AbuseIPDB} REST APIs to automate IOC validation and reduce alert triage latency.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {PhishGuard+ — AI-Driven Phishing Threat Detection Engine \ $|$ \ \emph{Python, Machine Learning, Threat Intel}}{Security Project}
+      \resumeItemListStart
+        \resumeItem{Developed an automated machine learning detection system for malicious URLs and suspicious email payloads, achieving \textbf{91.5\% classification accuracy}.}
+        \resumeItem{Engineered Python-based preprocessing pipelines to extract URL lexical heuristics, entropy scores, and domain age reputation metrics.}
+        \resumeItem{Optimized decision boundaries to minimize false-positive rates across standard phishing datasets, generating automated triage reports.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {Practical Incident Investigation \& Threat Hunting \ $|$ \ \emph{Wireshark, LetsDefend, BTLO, TryHackMe}}{Practical Scenarios}
+      \resumeItemListStart
+        \resumeItem{Investigated and closed simulated multi-stage incident scenarios involving endpoint malware execution, command-and-control (C2) beaconing, and lateral movement.}
+        \resumeItem{Extracted packet captures and memory artifacts using \textbf{Wireshark}; compiled structured Incident Response (IR) reports detailing timeline reconstruction, IOCs, and remediation steps.}
+      \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------CERTIFICATIONS & TRAINING-----------
+\section{Certifications \& Professional Training}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {CompTIA Security+ ce Certification}{CompTIA}
+      {Globally recognized cybersecurity certification validating baseline enterprise security and defense}{Active}
+    \resumeSubheading
+      {Offenso Certified Security Professional (OCSP)}{Offenso Hackers Academy}
+      {Practical hands-on security assessment, penetration testing, and defense certification}{Credentialed}
+    \resumeSubheading
+      {Comprehensive Cybersecurity \& SOC Training Program}{Offenso Hackers Academy}
+      {Intensive practical training in SIEM operations, log forensics, threat intelligence, and incident triage}{August 2025}
+\resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {UKF College of Engineering and Technology \ $|$ \ APJ Abdul Kalam Technological University}{Kollam, India}
+      {Bachelor of Technology (B.Tech) in Computer Science \& Engineering}{2021 -- 2025}
+      \resumeItemListStart
+        \resumeItem{\textbf{Core Engineering Coursework:} Computer Networks (TCP/IP, Routing \& Switching), Operating Systems (Linux/Unix Internals), Cryptography \& Network Security, Database Management Systems, Object-Oriented Software Design.}
+        \resumeItem{\textbf{Engineering Focus:} Applied core computer science principles directly into defensive security engineering, network protocol analysis, and algorithmic threat detection.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {St. Mary's Higher Secondary School}{Kerala, India}
+      {Higher Secondary Education (10+2) -- Computer Science}{Completed 2019}
+\resumeSubHeadingListEnd
+
+\end{document}
